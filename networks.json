@@ -1,0 +1,8 @@
+{
+  "celo": {
+    "UbeswapV3Farming": {
+      "address": "0xA6E9069CB055a425Eb41D185b740B22Ec8f51853",
+      "startBlock": 27485440
+    }
+  }
+}

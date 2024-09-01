@@ -1,0 +1,70 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: UbeswapV3Farming
+    network: celo
+    source:
+      address: "0xA6E9069CB055a425Eb41D185b740B22Ec8f51853"
+      abi: UbeswapV3Farming
+      startBlock: 27485440
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Incentive
+        - IncentivePeriod
+        - Position
+        - Deposit
+        - Stake
+        - DepositTransferred
+        - ExcessRewardsRefunded
+        - ExternalRewardCollected
+        - FeeCollected
+        - IncentiveCreated
+        - IncentiveExtended
+        - IncentiveUpdated
+        - PeriodRewardIncreased
+        - RewardCollected
+        - RoleAdminChanged
+        - RoleGranted
+        - RoleRevoked
+        - TokenStaked
+        - TokenUnstaked
+      abis:
+        - name: UbeswapV3Farming
+          file: ./abis/UbeswapV3Farming.json
+      eventHandlers:
+        - event: DepositTransferred(indexed uint256,indexed address,indexed address)
+          handler: handleDepositTransferred
+        - event: ExcessRewardsRefunded(indexed bytes32,uint128)
+          handler: handleExcessRewardsRefunded
+        - event: ExternalRewardCollected(indexed bytes32,address,uint256)
+          handler: handleExternalRewardCollected
+        - event: FeeCollected(indexed address,indexed uint256,address,uint128,uint128)
+          handler: handleFeeCollected
+        - event: IncentiveCreated(indexed bytes32,indexed address,indexed address,uint32,uint32,int24,int24,int24,int24,int24)
+          handler: handleIncentiveCreated
+        - event: IncentiveExtended(indexed bytes32,uint32,uint32,uint128)
+          handler: handleIncentiveExtended
+        - event: IncentiveUpdated(indexed bytes32,uint32,uint32,bytes32,bytes32,uint128,uint128,uint128)
+          handler: handleIncentiveUpdated
+        - event: PeriodRewardIncreased(indexed bytes32,uint32,uint128)
+          handler: handlePeriodRewardIncreased
+        - event: RewardCollected(indexed uint256,indexed bytes32,indexed address,uint256)
+          handler: handleRewardCollected
+        - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
+          handler: handleRoleAdminChanged
+        - event: RoleGranted(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleGranted
+        - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleRevoked
+        - event: TokenStaked(indexed uint256,indexed bytes32,uint128,uint32)
+          handler: handleTokenStaked
+        - event: TokenUnstaked(indexed uint256,indexed bytes32)
+          handler: handleTokenUnstaked
+      file: ./src/ubeswap-v-3-farming.ts

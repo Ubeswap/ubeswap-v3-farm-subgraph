@@ -1,0 +1,208 @@
+type Incentive @entity {
+  id: Bytes!
+  rewardToken: Bytes! # address
+  pool: Bytes! # address
+  startTime: BigInt! # uint32
+  lockTime: BigInt! # uint32
+  minimumTickRange: Int! # int24
+  maxTickLower: Int! # int24
+  minTickLower: Int! # int24
+  maxTickUpper: Int! # int24
+  minTickUpper: Int! # int24
+  endTime: BigInt! # uint32
+  currentPeriodId: BigInt! # uint32
+  currentPeriod: IncentivePeriod!
+  merkleRoot: Bytes! # bytes32
+  ipfsHash: Bytes! # bytes32
+}
+
+type IncentivePeriod @entity {
+  id: Bytes!
+  periodId: BigInt! # uint32
+  incentiveId: Bytes! # bytes32
+  startTime: BigInt! # uint32
+  endTime: BigInt! # uint32
+  reward: BigInt! # uint128
+}
+
+type Position @entity {
+  id: Bytes!
+  tokenId: BigInt! # uint256
+  liquidity: BigInt! # uint128:
+  tickLower: Int! # int24
+  tickUpper: Int! # int24
+  deposit: Deposit!
+}
+
+type Deposit @entity {
+  id: Bytes!
+  tokenId: BigInt! # uint256
+  owner: Bytes! # address
+  oldOwner: Bytes # address
+  firstOwner: Bytes # address
+}
+
+type Stake @entity {
+  id: Bytes!
+  incentiveId: Bytes! # bytes32
+  tokenId: BigInt! # uint256
+  deposit: Deposit!
+  incentive: Incentive!
+  position: Position!
+}
+
+# ---------------
+type DepositTransferred @entity(immutable: true) {
+  id: Bytes!
+  tokenId: BigInt! # uint256
+  oldOwner: Bytes! # address
+  newOwner: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type ExcessRewardsRefunded @entity(immutable: true) {
+  id: Bytes!
+  incentiveId: Bytes! # bytes32
+  refund: BigInt! # uint128
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type ExternalRewardCollected @entity(immutable: true) {
+  id: Bytes!
+  incentiveId: Bytes! # bytes32
+  to: Bytes! # address
+  reward: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type FeeCollected @entity(immutable: true) {
+  id: Bytes!
+  owner: Bytes! # address
+  tokenId: BigInt! # uint256
+  recipient: Bytes! # address
+  amount0Max: BigInt! # uint128
+  amount1Max: BigInt! # uint128
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type IncentiveCreated @entity(immutable: true) {
+  id: Bytes!
+  incentiveId: Bytes! # bytes32
+  rewardToken: Bytes! # address
+  pool: Bytes! # address
+  startTime: BigInt! # uint32
+  lockTime: BigInt! # uint32
+  minimumTickRange: Int! # int24
+  maxTickLower: Int! # int24
+  minTickLower: Int! # int24
+  maxTickUpper: Int! # int24
+  minTickUpper: Int! # int24
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type IncentiveExtended @entity(immutable: true) {
+  id: Bytes!
+  incentiveId: Bytes! # bytes32
+  newPeriodId: BigInt! # uint32
+  duration: BigInt! # uint32
+  reward: BigInt! # uint128
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type IncentiveUpdated @entity(immutable: true) {
+  id: Bytes!
+  incentiveId: Bytes! # bytes32
+  timestamp: BigInt! # uint32
+  newPeriodId: BigInt! # uint32
+  merkleRoot: Bytes! # bytes32
+  ipfsHash: Bytes! # bytes32
+  distributedRewardsSinceLastUpdate: BigInt! # uint128
+  activeTvlNative: BigInt! # uint128
+  externalTvlNative: BigInt! # uint128
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type PeriodRewardIncreased @entity(immutable: true) {
+  id: Bytes!
+  incentiveId: Bytes! # bytes32
+  periodId: BigInt! # uint32
+  reward: BigInt! # uint128
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RewardCollected @entity(immutable: true) {
+  id: Bytes!
+  tokenId: BigInt! # uint256
+  incentiveId: Bytes! # bytes32
+  to: Bytes! # address
+  reward: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RoleAdminChanged @entity(immutable: true) {
+  id: Bytes!
+  role: Bytes! # bytes32
+  previousAdminRole: Bytes! # bytes32
+  newAdminRole: Bytes! # bytes32
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RoleGranted @entity(immutable: true) {
+  id: Bytes!
+  role: Bytes! # bytes32
+  account: Bytes! # address
+  sender: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RoleRevoked @entity(immutable: true) {
+  id: Bytes!
+  role: Bytes! # bytes32
+  account: Bytes! # address
+  sender: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type TokenStaked @entity(immutable: true) {
+  id: Bytes!
+  tokenId: BigInt! # uint256
+  incentiveId: Bytes! # bytes32
+  liquidity: BigInt! # uint128
+  initialSecondsInside: BigInt! # uint32
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type TokenUnstaked @entity(immutable: true) {
+  id: Bytes!
+  tokenId: BigInt! # uint256
+  incentiveId: Bytes! # bytes32
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
